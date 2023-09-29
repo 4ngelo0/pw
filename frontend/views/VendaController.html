@@ -1,0 +1,118 @@
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-12 col-sm-10">
+                        <h4 class="text-primary">
+                            Vendas
+                        </h4>
+                    </div>
+                    <div class="col-12 col-sm-2">
+                        <button class="btn btn-primary btn-new btn-block">
+                        Nova Venda
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table-vendas" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Código</th>
+                                <th class="text-center">Data da Venda</th>
+                                <th class="text-center">Subtotal</th>
+                                <th class="text-center">Desconto</th>
+                                <th class="text-center">Valor Total</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Atendente</th>
+                                <th class="text-center">Forma de Pagamento</th>
+                                <th class="text-center">Cliente</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 border-top">
+                        <p class="text-center">
+                            Todos os direitos reservados <br> Desenvolvido por: Gabriel Angelo
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-vendas" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="my-modal-title">Title</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-vendas" action="" method="post">
+                    <div class="form-group">
+                        <label>Atendente</label>
+                        <!-- <input id="ATENDENTE" class="form-control" type="text" name="ATENDENTE"> -->
+                        <select name="ATENDENTE_ID" class="form-control" id="ATENDENTE_ID"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <!-- <input id="CLIENTE" class="form-control" type="text" name="CLIENTE"> -->
+                        <select name="CLIENTE_ID" class="form-control" id="CLIENTE"></select>
+                    </div>
+                    <div class="form-group-novos-campos">
+                        <!-- <input id="CLIENTE" class="form-control" type="text" name="CLIENTE"> -->
+                        <div class="novos-campos">
+                            <div class="row row-produtos mx-1">
+                                <label for="PRODUTO">Produtos</label>
+                                <select name="PRODUTO[]" class="form-control col-5 mx-1 produto-select" id="PRODUTO"></select>
+                                <label for="VALOR">Valor</label>
+                                <input id="VALOR" class="form-control col-3 mx-1 produto-valor" type="text" name="VALOR" readonly>
+                                <label for="QUANT">Quantidade</label>
+                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT" >
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-add-produto">Adicionar Produto</button>
+                    <div class="form-group">
+                        <label>Desconto</label>
+                        <input id="desconto" placeholder="Em porcentagem..." class="form-control" type="text" name="DESCONTO">
+                    </div>
+                    <div class="form-group">
+                        <div id="subtotal" NAME="SUBTOTAL">
+                            Subtotal: R$ 0.00 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div id="total" NAME="TOTAL">
+                            Total: R$ 0.00 
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-verificar">Verificar valores</button>
+                    <input type="hidden" name="ID" id="ID">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row justify-content-end">
+                    <div class="col-6 co-sm-2">
+                        <button data-dismiss="modal" class="btn btn-secondary">Fechar</button>
+                    </div>
+                    <div class="col-6 co-sm-2">
+                        <button data-dismiss="modal" class="btn btn-info btn-save">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="frontend/controllers/VendaController.js"></script>

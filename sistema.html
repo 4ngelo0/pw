@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysPed - Tela Gerencial</title>
+    <link rel="shortcut icon" href="assets/img/checklist.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendor/SweetAlert2/dist/sweetalert2.css">
+    <link rel="stylesheet" href="assets/css/module.css">
+    <link rel="stylesheet" href="assets/vendor/DataTables/datatables.css">
+</head>
+
+<body>
+
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 px-md-5">
+            <a class="navbar-brand d-flex">
+                <img class="img-fluid" src="assets/img/checklist.png" alt="" style="width: 50px; height: 50px;">
+                <p class="font-weight-bold text-white align-self-center m-0 text-uppercase">Sistema de pedidos</p>
+            </a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <div id="my-nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto text-white text-center">
+                    <li class="nav-item">
+                        <a class="nav-link mr-4" href="frontend/views/atendenteController.html">Atendente</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link" href="frontend/views/ClienteController.html" tabindex="-1" aria-disabled="true">Cliente</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link" href="frontend/views/fPagamentoController.html" tabindex="-1" aria-disabled="true">Forma de pagamento</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link" href="frontend/views/produtosController.html" tabindex="-1" aria-disabled="true">Produtos</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link" href="frontend/views/acessoController.html" tabindex="-1" aria-disabled="true">Tipo de acesso</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link" href="frontend/views/vendaController.html" tabindex="-1" aria-disabled="true">Venda</a>
+                    </li>
+                    <li class="nav-item  mr-4">
+                        <a class="nav-link sair-sistema" href="#" tabindex="-1" aria-disabled="true" id="SAIR">sair</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container" id="content">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <img class="img-fluid" src="assets/img/checklist.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/jquery-3.6.4.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="assets/js/menu.js"></script>
+    <script src="frontend/controllers/atendenteController.js"></script>
+    <script src="frontend/controllers/ValidateController.js"></script>
+    <script src="assets/vendor/SweetAlert2/dist/sweetalert2.all.js"></script>
+    <script src="assets/vendor/DataTables/datatables.js"></script>
+
+</body>
+
+</html>
