@@ -24,44 +24,45 @@ function CRUD(dados, url) {
 }
 
 $(document).ready(function() {
-    var contadorCampos = 1; 
+    var contadorCampos = 1;
 
-    // $('#table-vendas').DataTable({
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "ajax": {
-    //         "url": "api/models/vendascontroller.php?operacao=read",
-    //         "type": "POST"
-    //     },
-    //     "language": {
-    //         "url": "assets/vendor/DataTables/pt-BR.json"
-    //     },
-    //     "order": [
-    //         [0, "desc"]
-    //     ],
-    //     "columns": [{
-    //             "data": 'ID',
-    //             "className": 'text-center'
-    //         },
-    //         {
-    //             "data": 'NOME',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'ID',
-    //             "orderable": false,
-    //             "searchable": false,
-    //             "className": 'text-center',
-    //             "render": function(data, type, row, meta) {
-    //                 return `
-    //                 <button id="${data}" class="btn btn-info btn-sm btn-view">Visualizar</button>
-    //                 <button id="${data}" class="btn btn-primary btn-sm btn-edit">Editar</button>
-    //                 <button id="${data}" class="btn btn-danger btn-sm btn-delete">Excluir</button>
-    //                 `
-    //             }
-    //         }
-    //     ]
-    // })
+    $('#table-vendas').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            // "url": "api/models/vendascontroller.php?operacao=read",
+            "url": "../../../pw/api/models/vendacontroller.php?operacao=read",
+            "type": "POST"
+        },
+        "language": {
+            "url": "assets/vendor/DataTables/pt-BR.json"
+        },
+        "order": [
+            [0, "desc"]
+        ],
+        "columns": [{
+                "data": 'ID',
+                "className": 'text-center'
+            },
+            {
+                "data": 'NOME',
+                "className": 'text-left'
+            },
+            {
+                "data": 'ID',
+                "orderable": false,
+                "searchable": false,
+                "className": 'text-center',
+                "render": function(data, type, row, meta) {
+                    return `
+                    <button id="${data}" class="btn btn-info btn-sm btn-view">Visualizar</button>
+                    <button id="${data}" class="btn btn-primary btn-sm btn-edit">Editar</button>
+                    <button id="${data}" class="btn btn-danger btn-sm btn-delete">Excluir</button>
+                    `
+                }
+            }
+        ]
+    })
 
 
     var contador = 1;
@@ -92,13 +93,29 @@ $(document).ready(function() {
             dataType: "JSON",
             type: "POST",
             async: true,
-            url: '../../../SistemaPedidos/api/models/atendentecontroller.php',
+            url: '../../../pw/api/models/fPagamentocontroller.php',
+            data: '&operacao=list',
+            success: function(dados) {
+                $('#FPAGAMENTO_ID').empty();
+                for (const pagamento of dados) {
+                    let option = `<option value="${pagamento.ID}">${pagamento.NOME}</option>`;
+                    console.log(dados)
+                    $('#FPAGAMENTO_ID').append(option);
+                }
+            }
+        })
+
+        $.ajax({
+            dataType: "JSON",
+            type: "POST",
+            async: true,
+            url: '../../../pw/api/models/atendentecontroller.php',
             data: '&operacao=list',
             success: function(dados) {
                 $('#ATENDENTE_ID').empty();
                 for (const tipo of dados) {
                     let option = `<option value="${tipo.ID}">${tipo.NOME}</option>`;
-                    console.log(dados)
+                    // console.log(dados)
                     $('#ATENDENTE_ID').append(option);
                 }
             }
@@ -108,13 +125,13 @@ $(document).ready(function() {
             dataType: "JSON",
             type: "POST",
             async: true,
-            url: '../../../SistemaPedidos/api/models/clientecontroller.php',
+            url: '../../../pw/api/models/clientecontroller.php',
             data: '&operacao=list',
             success: function(dados) {
                 $('#CLIENTE').empty();
                 for (const tipo of dados) {
                     let option = `<option value="${tipo.ID}">${tipo.NOME}</option>`;
-                    console.log(dados)
+                    // console.log(dados)
                     $('#CLIENTE').append(option);
                 }
             }
@@ -127,7 +144,7 @@ $(document).ready(function() {
         dataType: "JSON",
         type: "POST",
         async: true,
-        url: '../../../SistemaPedidos/api/models/produtocontroller.php', 
+        url: '../../../pw/api/models/produtocontroller.php',
         data: '&operacao=list',
         success: function(dados) {
             $('#PRODUTO').empty();
@@ -138,40 +155,41 @@ $(document).ready(function() {
         }
     });
 
+
     $(document).ready(function() {
 
-// Função para calcular o subtotal
+        // Função para calcular o subtotal
 
-// Função para calcular o subtotal e total com desconto
-function calcular() {
-    var subtotal = 0;
-    var total = 0;
+        // Função para calcular o subtotal e total com desconto
+        function calcular() {
+            var subtotal = 0;
+            var total = 0;
 
-    // Percorre todos os campos de quantidade e produtos
-    $('.novos-campos').each(function() {
-        var quantidade = parseFloat($(this).find('.quantidade-produto').val()) || 0;
-        var valorProduto = parseFloat($(this).find('.produto-valor').val()) || 0;
+            // Percorre todos os campos de quantidade e produtos
+            $('.novos-campos').each(function() {
+                var quantidade = parseFloat($(this).find('.quantidade-produto').val()) || 0;
+                var valorProduto = parseFloat($(this).find('.produto-valor').val()) || 0;
 
-        subtotal += quantidade * valorProduto;
-    });
+                subtotal += quantidade * valorProduto;
+            });
 
-    // Obtém o valor do desconto (em porcentagem)
-    var desconto = parseFloat($('#desconto').val()) || 0;
+            // Obtém o valor do desconto (em porcentagem)
+            var desconto = parseFloat($('#desconto').val()) || 0;
 
-    // Calcula o total após aplicar o desconto
-    total = subtotal - (subtotal * (desconto / 100));
+            // Calcula o total após aplicar o desconto
+            total = subtotal - (subtotal * (desconto / 100));
 
-    // Atualize os elementos HTML com os valores calculados
-    $('#subtotal').text(subtotal.toFixed(2));
-    $('#total').text(total.toFixed(2));
+            // Atualize os elementos HTML com os valores calculados
+            $('#SUBTOTAL').val(subtotal.toFixed(2));
+            $('#VLRTOTAL').val(total.toFixed(2));
 
-    
-}
-$('.btn-verificar').click(function() {
-    calcular()
-});
-        
-    
+
+        }
+        $('.btn-verificar').click(function() {
+            calcular()
+        });
+
+
         // Função para clonar campos de produto
         $('.btn-add-produto').click(function() {
             contadorCampos++;
@@ -188,22 +206,22 @@ $('.btn-verificar').click(function() {
                             </div>
             `;
             $('.novos-campos:last').after(novoCampo);
-    
+
             // Recarrega a lista de produtos no novo campo
             carregarListaProdutos(`#PRODUTO_${contadorCampos}`);
 
             // Chama a função calcularSubtotal após adicionar um novo produto
-        
+
         });
-        
-    
+
+
         // Função para carregar a lista de produtos em um campo de seleção
         function carregarListaProdutos(seletor) {
             $.ajax({
                 dataType: "JSON",
                 type: "POST",
                 async: true,
-                url: '../../../SistemaPedidos/api/models/produtocontroller.php',
+                url: '../../../pw/api/models/produtocontroller.php',
                 data: '&operacao=list',
                 success: function(dados) {
                     var selectProduto = $(seletor);
@@ -217,10 +235,10 @@ $('.btn-verificar').click(function() {
 
 
         }
-    
+
         // Quando o documento carrega, carregue a lista de produtos no primeiro campo
         carregarListaProdutos('#PRODUTO');
-    
+
         // Manipula mudanças nos campos de seleção de produto
         $(document).on('change', '.produto-select', function() {
             var $selectedOption = $(this).find('option:selected');
@@ -229,14 +247,14 @@ $('.btn-verificar').click(function() {
         });
     });
 
-    
+
 
     $('.btn-save').click(function(e) {
         e.preventDefault()
 
         let dados = $('#form-vendas').serialize()
         dados += `&operacao=${$('.btn-save').attr('data-operation')}`
-        let url = '../../../SistemaPedidos/api/models/vendacontroller.php'
+        let url = '../../../pw/api/models/vendacontroller.php'
         CRUD(dados, url);
         $('#table-vendas').DataTable().ajax.reload();
     })
@@ -248,7 +266,7 @@ $('.btn-verificar').click(function() {
         $('.modal-title').append('Visualização de registros');
 
         let dados = `ID=${$(this).attr('id')}&operacao=view`
-        let url = 'api/models/vendascontroller.php'
+        let url = '../../../pw/api/models/vendacontroller.php'
         CRUD(dados, url);
         $('.btn-save').hide();
         $('input').prop('disabled', true);
@@ -263,7 +281,7 @@ $('.btn-verificar').click(function() {
         $('.modal-title').append('Edição de registros');
 
         let dados = `ID=${$(this).attr('id')}&operacao=view`
-        let url = 'api/models/vendascontroller.php'
+        let url = '../../../pw/api/models/vendacontroller.php'
         CRUD(dados, url);
         $('.btn-save').attr('data-operation', 'update');
         $('.btn-save').show();
@@ -285,7 +303,7 @@ $('.btn-verificar').click(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 let dados = `ID=${$(this).attr('id')}&operacao=delete`;
-                let url = 'api/models/vendascontroller.php';
+                let url = '../../../pw/api/models/vendacontroller.php';
                 CRUD(dados, url);
                 $('#table-vendas').DataTable().ajax.reload();
             } else if (result.dismiss === Swal.DismissReason.cancel) {

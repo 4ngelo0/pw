@@ -78,7 +78,7 @@
                                 <label for="VALOR">Valor</label>
                                 <input id="VALOR" class="form-control col-3 mx-1 produto-valor" type="text" name="VALOR" readonly>
                                 <label for="QUANT">Quantidade</label>
-                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT" >
+                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT">
                             </div>
                         </div>
                     </div>
@@ -88,16 +88,24 @@
                         <input id="desconto" placeholder="Em porcentagem..." class="form-control" type="text" name="DESCONTO">
                     </div>
                     <div class="form-group">
-                        <div id="subtotal" NAME="SUBTOTAL">
-                            Subtotal: R$ 0.00 
-                        </div>
+                        <label for="SUBTOTAL"></label>
+                        <input type="text" id="SUBTOTAL" name="SUBTOTAL" disable>
+                        <!-- <div id="subtotal" NAME="SUBTOTAL">
+                            Subtotal: R$ 0.00
+                        </div> -->
                     </div>
                     <div class="form-group">
-                        <div id="total" NAME="TOTAL">
-                            Total: R$ 0.00 
-                        </div>
+                        <label for="VLRTOTAL"></label>
+                        <input type="text" id="VLRTOTAL" name="VLRTOTAL" disable>
+                        <!-- <div id="total" NAME="VLRTOTAL">
+                            Total: R$ 0.00
+                        </div> -->
                     </div>
                     <button type="button" class="btn btn-primary btn-verificar">Verificar valores</button>
+                    <div class="form-group">
+                        <label for="FPAGAMENTO_ID">Forma de Pagamento</label>
+                        <select name="FPAGAMENTO_ID" class="form-control produto-select" id="FPAGAMENTO_ID"></select>
+                    </div>
                     <input type="hidden" name="ID" id="ID">
                 </form>
             </div>

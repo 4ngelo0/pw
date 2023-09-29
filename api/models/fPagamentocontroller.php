@@ -185,3 +185,18 @@ if($requestData['operacao'] == 'view'){
 
 echo json_encode($dados);
 }
+
+if($requestData['operacao'] == 'list'){
+
+    // gerar a querie de insersao no banco de dados 
+    $sql = "SELECT * FROM FPAGAMENTO";
+    $resultado = $pdo->query($sql);
+
+    if($resultado->rowCount() > 0){
+        $dados = array();
+        while($row = $resultado->fetch(PDO::FETCH_ASSOC)){
+            $dados[] = array_map(null, $row);
+        }
+        echo json_encode($dados);
+}
+}
