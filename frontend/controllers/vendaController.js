@@ -24,18 +24,16 @@ function CRUD(dados, url) {
 }
 
 $(document).ready(function() {
-    var contadorCampos = 1;
 
     $('#table-vendas').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
-            // "url": "api/models/vendascontroller.php?operacao=read",
             "url": "../../../pw/api/models/vendacontroller.php?operacao=read",
             "type": "POST"
         },
         "language": {
-            "url": "assets/vendor/DataTables/pt-BR.json"
+            "url": "../../../pw/assets/vendor/DataTables/pt-BR.json"
         },
         "order": [
             [0, "desc"]
@@ -45,7 +43,27 @@ $(document).ready(function() {
                 "className": 'text-center'
             },
             {
-                "data": 'NOME',
+                "data": 'DATA',
+                "className": 'text-left'
+            },
+            {
+                "data": 'SUBTOTAL',
+                "className": 'text-left'
+            },
+            {
+                "data": 'DESCONTO',
+                "className": 'text-left'
+            },
+            {
+                "data": 'VLRTOTAL',
+                "className": 'text-left'
+            },
+            {
+                "data": 'FPAGAMENTO_ID',
+                "className": 'text-left'
+            },
+            {
+                "data": 'CLIENTE_ID',
                 "className": 'text-left'
             },
             {
