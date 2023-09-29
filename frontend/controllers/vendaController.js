@@ -1,29 +1,125 @@
-function CRUD(dados, url) {
-    $.ajax({
-        dataType: 'JSON',
-        type: 'POST',
-        assync: true,
-        url: url,
-        data: dados,
-        success: function(dados) {
-            if (dados.mensagem != '') {
-                Swal.fire({
-                    icon: dados.type,
-                    title: 'Sistema de Pedidos',
-                    text: dados.mensagem
-                })
-                $('#modal-vendas').modal('hide')
-            } else if (dados.type == 'view') {
-                $('#NOME').val(dados.dados.NOME)
-                $('#UNDVENDA').val(dados.dados.UNDVENDA)
-                $('#VLRVENDA').val(dados.dados.VLRVENDA)
-                $('#ID').val(dados.dados.ID)
-            }
-        }
-    })
-}
 
 $(document).ready(function() {
+    function CRUD(dados, url) {
+        $.ajax({
+            dataType: 'JSON',
+            type: 'POST',
+            assync: true,
+            url: url,
+            data: dados,
+            success: function(dados) {
+                if (dados.mensagem != '') {
+                    Swal.fire({
+                        icon: dados.type,
+                        title: 'Sistema de Pedidos',
+                        text: dados.mensagem
+                    })
+                    $('#modal-vendas').modal('hide')
+                } else if (dados.type == 'view') {
+                    // for (const result of dados) {
+                    
+                    // Carregar as opções de FPAGAMENTO_ID selecionando o valor correto
+        $.ajax({
+            dataType: "JSON",
+            type: "POST",
+            async: true,
+            url: '../../../pw/api/models/fPagamentocontroller.php',
+            data: '&operacao=list',
+            success: function(fpagamentoDados) {
+                $('#FPAGAMENTO_ID').empty();
+                for (const pagamento of fpagamentoDados) {
+                    let option = `<option value="${pagamento.ID}" ${dados.FPAGAMENTO_ID == pagamento.ID ? 'selected' : ''}>${pagamento.NOME}</option>`;
+                    console.log(dados);
+                    $('#FPAGAMENTO_ID').append(option);
+                }
+            }
+        });
+    
+        // Carregar as opções de ATENDENTE_ID selecionando o valor correto
+        $.ajax({
+            dataType: "JSON",
+            type: "POST",
+            async: true,
+            url: '../../../pw/api/models/atendentecontroller.php',
+            data: '&operacao=list',
+            success: function(atendenteDados) {
+                $('#ATENDENTE_ID').empty();
+                for (const tipo of atendenteDados) {
+                    let option = `<option value="${tipo.ID}" ${dados.ATENDENTE_ID == tipo.ID ? 'selected' : ''}>${tipo.NOME}</option>`;
+                    $('#ATENDENTE_ID').append(option);
+                }
+            }
+        });
+        // $.ajax({
+        //     dataType: "JSON",
+        //     type: "POST",
+        //     async: true,
+        //     url: '../../../pw/api/models/itensvendacontroller.php?operacao=view',
+        //     data: dados,
+        //     success: function(vendas) {
+        //     console.log(vendas);
+        //     }
+        // });
+    
+        // Carregar as opções de CLIENTE_ID selecionando o valor correto
+        $.ajax({
+            dataType: "JSON",
+            type: "POST",
+            async: true,
+            url: '../../../pw/api/models/clientecontroller.php',
+            data: '&operacao=list',
+            success: function(clienteDados) {
+                $('#CLIENTE').empty();
+                for (const tipo of clienteDados) {
+                    let option = `<option value="${tipo.ID}" ${dados.CLIENTE_ID == tipo.ID ? 'selected' : ''}>${tipo.NOME}</option>`;
+                    $('#CLIENTE').append(option);
+                }
+            }
+        });
+
+        $.ajax({
+            dataType: "JSON",
+            type: "POST",
+            async: true,
+            data: { ID: dados.ID }, // Enviar apenas o ID_CURSO
+            url: '../../../pw/api/models/clientecontroller.php?operacao=list',
+            success: function(infos) {
+                $('#CLIENTE_ID').empty();
+                for (const tipo of infos) {
+                    let option = `<option>${tipo.NOME}</option>`;
+                    if (tipo.ID === dados.CLIENTE_ID) {
+                        option = `<option selected value="${tipo.ID}">${tipo.NOME}</option>`;
+                    } else {
+                        option = `<option value="${tipo.ID}">${tipo.NOME}</option>`;
+                    }
+                    console.log(option);
+                    $('#CLIENTE_ID').append(option);
+                }
+            }
+        });        
+    // }
+
+        // // Carregar as opções de PRODUTO selecionando os valores corretos
+        // $.ajax({
+        //     dataType: "JSON",
+        //     type: "POST",
+        //     async: true,
+        //     url: '../../../pw/api/models/produtocontroller.php',
+        //     data: '&operacao=list',
+        //     success: function(produtoDados) {
+        //         $('#PRODUTO').empty();
+        //         for (const produto of produtoDados) {
+        //             let option = `<option value="${produto.ID}" data-valor="${produto.VLRVENDA}" ${dados.PRODUTO_ID == produto.ID ? 'selected' : ''}>${produto.NOME}</option>`;
+        //             $('#PRODUTO').append(option);
+        //         }
+        //     }
+        // });
+    
+                }
+            }
+        })
+    }
+    
 
     $('#table-vendas').DataTable({
         "processing": true,
@@ -59,6 +155,14 @@ $(document).ready(function() {
                 "className": 'text-left'
             },
             {
+                "data": 'STATUS',
+                "className": 'text-left'
+            },
+            {
+                "data": 'ATENDENTE_ID',
+                "className": 'text-left'
+            },
+            {
                 "data": 'FPAGAMENTO_ID',
                 "className": 'text-left'
             },
@@ -82,28 +186,13 @@ $(document).ready(function() {
         ]
     })
 
-
-    var contador = 1;
-    // $('.add-int').click(function(e) {
-    $(document).off('click', '.add-int').on('click', '.add-int', function(e) {
-        e.preventDefault();
-        contador++;
-        var novoinput = `
-        <select name="CLIENTE_ID" class="form-control col-1 mx-1" id="CLIENTE"></select>
-        <input id="QUANT" class="form-control col-1 mx-1" type="text" name="QUANT">
-        <input id="QUANT" class="form-control col-1 mx-1" type="text" name="QUANT">
-        `
-
-        $('.novos-campos').append(novoinput);
-        feather.replace();
-    });
-
     $('.btn-new').click(function(e) {
         e.preventDefault()
         $('.modal-title').empty()
         $('.modal-title').append('Cadastro de Venda')
         $('#form-vendas :input').val('')
-        $('input').prop('disabled', false)
+            $('input').prop('disabled', false)
+            $('select').prop('disabled', false)
         $('.btn-save').attr('data-operation', 'create')
         $('#modal-vendas').modal('show')
 
@@ -208,19 +297,20 @@ $(document).ready(function() {
         });
 
 
+        contadorCampos = 1;
         // Função para clonar campos de produto
         $('.btn-add-produto').click(function() {
             contadorCampos++;
-            var novoCampo = `
+            var novoCampo = `'
             <div class="form-group-novos-campos">
                         <div class="novos-campos">
                             <div class="row row-produtos mx-1">
-                                <label for="PRODUTO">Produtos</label>
-                                <select name="PRODUTO[]" class="form-control col-5 mx-1 produto-select" id="PRODUTO_${contadorCampos}"></select>
+                                <label for="PRODUTO_ID[]">Produtos</label>
+                                <select name="PRODUTO_ID[]" class="form-control col-5 mx-1 produto-select" id="PRODUTO_${contadorCampos}"></select>
                                 <label for="VALOR">Valor</label>
                                 <input id="VALOR_PRODUTO_${contadorCampos}" class="form-control col-3 mx-1 produto-valor" type="text" name="VALOR" readonly>
-                                <label for="QUANT">Quantidade</label>
-                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT" >
+                                <label for="QUANT[]">Quantidade</label>
+                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT[]" >
                             </div>
             `;
             $('.novos-campos:last').after(novoCampo);
@@ -288,6 +378,7 @@ $(document).ready(function() {
         CRUD(dados, url);
         $('.btn-save').hide();
         $('input').prop('disabled', true);
+        $('select').prop('disabled', true);
         $('#modal-vendas').modal('show');
     })
 
@@ -311,15 +402,17 @@ $(document).ready(function() {
     //Função para excluir os dados do Datatables
     $('#table-vendas').on('click', 'button.btn-delete', function(e) {
         e.preventDefault();
+        console.log('foi')
         Swal.fire({
             icon: 'warning',
             title: 'Atenção',
-            text: 'Deseja realmente excluir este registro?',
+            text: 'Deseja realmente excluir esta venda?',
             showCancelButton: true,
             cancelButtonColor: 'Cancelar',
             confirmButtonColor: '#3085d6',
         }).then((result) => {
             if (result.isConfirmed) {
+                console.log('foi 2')
                 let dados = `ID=${$(this).attr('id')}&operacao=delete`;
                 let url = '../../../pw/api/models/vendacontroller.php';
                 CRUD(dados, url);

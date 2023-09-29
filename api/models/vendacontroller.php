@@ -45,13 +45,14 @@ $indice = count($_REQUEST['PRODUTO_ID']);
 // laço de repetição para percorrer todos os usuários e cadastrar na tabela TRABALHOS_USUARIOS
 for ($i = 0; $i < $indice; $i++) {
     // executar a inserção das informações dos usuários na tabela TRABALHOS_USUARIOS
-    $stmt = $pdo->prepare('INSERT INTO ITENSVENDA (VENDA_ID, PRODUTO_ID, DATA, ATENDENTE_ID) VALUES (?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO ITENSVENDA (VENDA_ID, PRODUTO_ID, DATA, ATENDENTE_ID, QUANT) VALUES (?, ?, ?, ?, ?)');
 
     $stmt->execute(array(
         $ID,
         $_REQUEST['PRODUTO_ID'][$i],
         $dataLocal,
-        $ATENDENTE_ID
+        $ATENDENTE_ID,
+        $_REQUEST['QUANT'][$i]
     ));
 }            
         
@@ -120,7 +121,6 @@ if($requestData['operacao'] == 'update'){
     
     
     try{
-  
         $sql = "UPDATE VENDA SET DATA = ?, SUBTOTAL = ?, DESCONTO = ?, VLRTOTAL = ?, ATENDENTE_ID = ?, FPAGAMENTO_ID = ? CLIENTE_ID = ? WHERE ID = ?";
         // preparar a querie para gerar objetos de insersao no banco de dados
     
@@ -154,9 +154,31 @@ if($requestData['operacao'] == 'update'){
     
     
     echo json_encode($dados);
+}
 
+if($requestData['operacao'] == 'view'){
+    // gerar a querie de insersao no banco de dados 
+    $sql = "SELECT * FROM VENDA WHERE ID = ".$requestData['ID']."";
+    $resultado = $pdo->query($sql);
 
+    if($resultado){
+        $result = array();
+        while($row = $resultado->fetch(PDO::FETCH_ASSOC)){
+            $result = array_map(null, $row);
+    }
+    $dados = array(
+        'type' => 'view',
+        'mensagem' => '',
+        'dados' => $result
+    );
+} else {
+    $dados = array(
+        'type' => 'error',
+        'mensagem' => 'Erro ao visualizar o registro:!'.$e
+    );
+}
 
+echo json_encode($dados);
 }
 
 if($requestData['operacao'] == 'delete'){
@@ -189,7 +211,4 @@ if($requestData['operacao'] == 'delete'){
     
     
     echo json_encode($dados);
-
-
-
 }

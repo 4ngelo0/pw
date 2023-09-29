@@ -45,6 +45,31 @@ if($requestData['operacao'] == 'create'){
 
 }
 
+if($requestData['operacao'] == 'view'){
+    // gerar a querie de insersao no banco de dados 
+    $sql = "SELECT * FROM ITENSVENDA WHERE ID = ".$requestData['VENDA_ID']."";
+    $resultado = $pdo->query($sql);
+
+    if($resultado){
+        $result = array();
+        while($row = $resultado->fetch(PDO::FETCH_ASSOC)){
+            $result = array_map(null, $row);
+    }
+    $dados = array(
+        'type' => 'view',
+        'mensagem' => '',
+        'dados' => $result
+    );
+} else {
+    $dados = array(
+        'type' => 'error',
+        'mensagem' => 'Erro ao visualizar o registro:!'.$e
+    );
+}
+
+echo json_encode($dados);
+}
+
 if($requestData['operacao'] == 'read'){
    
     // Obter o número de colunas vinda do front-end
