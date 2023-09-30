@@ -73,71 +73,6 @@ $(document).ready(function() {
         });
     }
 
-
-    // $('#table-vendas').DataTable({
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "ajax": {
-    //         "url": "../../../pw/api/models/vendacontroller.php?operacao=read",
-    //         "type": "POST"
-    //     },
-    //     "language": {
-    //         "url": "../../../pw/assets/vendor/DataTables/pt-BR.json"
-    //     },
-    //     "order": [
-    //         [0, "desc"]
-    //     ],
-    //     "columns": [{
-    //             "data": 'ID',
-    //             "className": 'text-center'
-    //         },
-    //         {
-    //             "data": 'DATA',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'SUBTOTAL',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'DESCONTO',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'VLRTOTAL',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'STATUS',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'ATENDENTE_ID',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'FPAGAMENTO_ID',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'CLIENTE_ID',
-    //             "className": 'text-left'
-    //         },
-    //         {
-    //             "data": 'ID',
-    //             "orderable": false,
-    //             "searchable": false,
-    //             "className": 'text-center',
-    //             "render": function(data, type, row, meta) {
-    //                 return `
-    //                 <button id="${data}" class="btn btn-info btn-sm btn-view">Visualizar</button>
-    //                 <button id="${data}" class="btn btn-primary btn-sm btn-edit">Editar</button>
-    //                 <button id="${data}" class="btn btn-danger btn-sm btn-delete">Excluir</button>
-    //                 `
-    //             }
-    //         }
-    //     ]
-    // })
     $('#table-vendas').DataTable({
         "processing": true,
         "serverSide": true,
@@ -153,14 +88,14 @@ $(document).ready(function() {
         ],
         "columns": [
             { "data": 'ID', "className": 'text-center' },
-            { "data": 'DATA', "className": 'text-left' },
-            { "data": 'SUBTOTAL', "className": 'text-left' },
-            { "data": 'DESCONTO', "className": 'text-left' },
-            { "data": 'VLRTOTAL', "className": 'text-left' },
-            { "data": 'STATUS', "className": 'text-left' },
-            { "data": 'ATENDENTE_NOME', "className": 'text-left' }, // Exibir o nome do atendente
-            { "data": 'FPAGAMENTO_NOME', "className": 'text-left' }, // Exibir o nome da forma de pagamento
-            { "data": 'CLIENTE_NOME', "className": 'text-left' }, // Exibir o nome do cliente
+            { "data": 'DATA', "className": 'text-center' },
+            { "data": 'SUBTOTAL', "className": 'text-center' },
+            { "data": 'DESCONTO', "className": 'text-center' },
+            { "data": 'VLRTOTAL', "className": 'text-center' },
+            { "data": 'STATUS', "className": 'text-center' },
+            { "data": 'ATENDENTE_NOME', "className": 'text-center' }, // Exibir o nome do atendente
+            { "data": 'FPAGAMENTO_NOME', "className": 'text-center' }, // Exibir o nome da forma de pagamento
+            { "data": 'CLIENTE_NOME', "className": 'text-center' }, // Exibir o nome do cliente
             {
                 "data": 'ID',
                 "orderable": false,
@@ -259,8 +194,6 @@ $(document).ready(function() {
     $(document).ready(function() {
 
         // Função para calcular o subtotal
-
-        // Função para calcular o subtotal e total com desconto
         function calcular() {
             var subtotal = 0;
             var total = 0;
@@ -269,24 +202,22 @@ $(document).ready(function() {
             $('.novos-campos').each(function() {
                 var quantidade = parseFloat($(this).find('.quantidade-produto').val()) || 0;
                 var valorProduto = parseFloat($(this).find('.produto-valor').val()) || 0;
-
-                subtotal += quantidade * valorProduto;
+                subtotal = quantidade * valorProduto;
             });
 
             // Obtém o valor do desconto (em porcentagem)
-            var desconto = parseFloat($('#desconto').val()) || 0;
+            var desconto = parseFloat($('#DESCONTO').val()) || 0;
 
             // Calcula o total após aplicar o desconto
             total = subtotal - (subtotal * (desconto / 100));
 
             // Atualize os elementos HTML com os valores calculados
-            $('#SUBTOTAL').val(subtotal.toFixed(2));
-            $('#VLRTOTAL').val(total.toFixed(2));
+            $('#SUBTOTAL').empty().val(subtotal.toFixed(2));
+            $('#VLRTOTAL').empty().val(total.toFixed(2));
 
 
         }
         $('.btn-verificar').click(function() {
-            console.log('subtotal.toFixed(2)');
             calcular()
         });
 
@@ -295,7 +226,7 @@ $(document).ready(function() {
         // Função para clonar campos de produto
         $('.btn-add-produto').click(function() {
             contadorCampos++;
-            var novoCampo = `'
+            var novoCampo = `
             <div class="form-group-novos-campos">
                         <div class="novos-campos">
                             <div class="row row-produtos mx-1">
