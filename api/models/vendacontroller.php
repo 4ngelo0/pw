@@ -78,7 +78,14 @@ for ($i = 0; $i < $indice; $i++) {
 if($requestData['operacao'] == 'read'){
     $colunas = $requestData['columns']; //Obter as colunas vindas do resquest
     //Preparar o comando sql para obter os dados da categoria
-    $sql = "SELECT * FROM VENDA WHERE 1=1 ";
+    $sql = "SELECT VENDA.ID, VENDA.DATA, VENDA.SUBTOTAL, VENDA.DESCONTO, VENDA.VLRTOTAL, VENDA.STATUS, ATENDENTE.NOME AS ATENDENTE_NOME, FPAGAMENTO.NOME AS FPAGAMENTO_NOME, CLIENTE.NOME AS CLIENTE_NOME
+    FROM VENDA
+    LEFT JOIN ATENDENTE ON VENDA.ATENDENTE_ID = ATENDENTE.ID
+    LEFT JOIN FPAGAMENTO ON VENDA.FPAGAMENTO_ID = FPAGAMENTO.ID
+    LEFT JOIN CLIENTE ON VENDA.CLIENTE_ID = CLIENTE.ID
+    WHERE 1=1 ";
+
+    
     //Obter o total de registros cadastrados
     $resultado = $pdo->query($sql);
     $qtdeLinhas = $resultado->rowCount();
@@ -105,6 +112,9 @@ if($requestData['operacao'] == 'read'){
     $resultado = $pdo->query($sql);
     $resultData = array();
     while($row = $resultado->fetch(PDO::FETCH_ASSOC)){
+        $row['ATENDENTE_ID'] = $row['ATENDENTE_NOME'];
+        $row['FPAGAMENTO_ID'] = $row['FPAGAMENTO_NOME'];
+        $row['CLIENTE_ID'] = $row['CLIENTE_NOME'];
         $resultData[] = array_map('utf8_encode', $row);
     }
     //Monta o objeto json para retornar ao DataTable

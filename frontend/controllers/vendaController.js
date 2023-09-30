@@ -74,6 +74,70 @@ $(document).ready(function() {
     }
 
 
+    // $('#table-vendas').DataTable({
+    //     "processing": true,
+    //     "serverSide": true,
+    //     "ajax": {
+    //         "url": "../../../pw/api/models/vendacontroller.php?operacao=read",
+    //         "type": "POST"
+    //     },
+    //     "language": {
+    //         "url": "../../../pw/assets/vendor/DataTables/pt-BR.json"
+    //     },
+    //     "order": [
+    //         [0, "desc"]
+    //     ],
+    //     "columns": [{
+    //             "data": 'ID',
+    //             "className": 'text-center'
+    //         },
+    //         {
+    //             "data": 'DATA',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'SUBTOTAL',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'DESCONTO',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'VLRTOTAL',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'STATUS',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'ATENDENTE_ID',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'FPAGAMENTO_ID',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'CLIENTE_ID',
+    //             "className": 'text-left'
+    //         },
+    //         {
+    //             "data": 'ID',
+    //             "orderable": false,
+    //             "searchable": false,
+    //             "className": 'text-center',
+    //             "render": function(data, type, row, meta) {
+    //                 return `
+    //                 <button id="${data}" class="btn btn-info btn-sm btn-view">Visualizar</button>
+    //                 <button id="${data}" class="btn btn-primary btn-sm btn-edit">Editar</button>
+    //                 <button id="${data}" class="btn btn-danger btn-sm btn-delete">Excluir</button>
+    //                 `
+    //             }
+    //         }
+    //     ]
+    // })
     $('#table-vendas').DataTable({
         "processing": true,
         "serverSide": true,
@@ -87,42 +151,16 @@ $(document).ready(function() {
         "order": [
             [0, "desc"]
         ],
-        "columns": [{
-                "data": 'ID',
-                "className": 'text-center'
-            },
-            {
-                "data": 'DATA',
-                "className": 'text-left'
-            },
-            {
-                "data": 'SUBTOTAL',
-                "className": 'text-left'
-            },
-            {
-                "data": 'DESCONTO',
-                "className": 'text-left'
-            },
-            {
-                "data": 'VLRTOTAL',
-                "className": 'text-left'
-            },
-            {
-                "data": 'STATUS',
-                "className": 'text-left'
-            },
-            {
-                "data": 'ATENDENTE_ID',
-                "className": 'text-left'
-            },
-            {
-                "data": 'FPAGAMENTO_ID',
-                "className": 'text-left'
-            },
-            {
-                "data": 'CLIENTE_ID',
-                "className": 'text-left'
-            },
+        "columns": [
+            { "data": 'ID', "className": 'text-center' },
+            { "data": 'DATA', "className": 'text-left' },
+            { "data": 'SUBTOTAL', "className": 'text-left' },
+            { "data": 'DESCONTO', "className": 'text-left' },
+            { "data": 'VLRTOTAL', "className": 'text-left' },
+            { "data": 'STATUS', "className": 'text-left' },
+            { "data": 'ATENDENTE_NOME', "className": 'text-left' }, // Exibir o nome do atendente
+            { "data": 'FPAGAMENTO_NOME', "className": 'text-left' }, // Exibir o nome da forma de pagamento
+            { "data": 'CLIENTE_NOME', "className": 'text-left' }, // Exibir o nome do cliente
             {
                 "data": 'ID',
                 "orderable": false,
@@ -133,11 +171,12 @@ $(document).ready(function() {
                     <button id="${data}" class="btn btn-info btn-sm btn-view">Visualizar</button>
                     <button id="${data}" class="btn btn-primary btn-sm btn-edit">Editar</button>
                     <button id="${data}" class="btn btn-danger btn-sm btn-delete">Excluir</button>
-                    `
+                    `;
                 }
             }
         ]
-    })
+    });
+
 
     $('.btn-new').click(function(e) {
         e.preventDefault()
