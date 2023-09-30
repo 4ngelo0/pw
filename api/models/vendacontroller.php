@@ -121,7 +121,7 @@ if($requestData['operacao'] == 'update'){
     
     
     try{
-        $sql = "UPDATE VENDA SET DATA = ?, SUBTOTAL = ?, DESCONTO = ?, VLRTOTAL = ?, ATENDENTE_ID = ?, FPAGAMENTO_ID = ? CLIENTE_ID = ? WHERE ID = ?";
+        $sql = "UPDATE VENDA SET DATA = ?, SUBTOTAL = ?, DESCONTO = ?, VLRTOTAL = ?, ATENDENTE_ID = ?, FPAGAMENTO_ID = ?, CLIENTE_ID = ? WHERE ID = ?";
         // preparar a querie para gerar objetos de insersao no banco de dados
     
         $stmt = $pdo->prepare($sql); // atribuindo para ver se existe

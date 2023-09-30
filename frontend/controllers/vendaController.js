@@ -1,10 +1,9 @@
-
 $(document).ready(function() {
     function CRUD(dados, url) {
         $.ajax({
             dataType: 'JSON',
             type: 'POST',
-            assync: true,
+            async: true,
             url: url,
             data: dados,
             success: function(dados) {
@@ -14,112 +13,66 @@ $(document).ready(function() {
                         title: 'Sistema de Pedidos',
                         text: dados.mensagem
                     })
-                    $('#modal-vendas').modal('hide')
+                    $('#modal-vendas').modal('hide');
                 } else if (dados.type == 'view') {
-                    // for (const result of dados) {
-                    
-                    // Carregar as opções de FPAGAMENTO_ID selecionando o valor correto
-        $.ajax({
-            dataType: "JSON",
-            type: "POST",
-            async: true,
-            url: '../../../pw/api/models/fPagamentocontroller.php',
-            data: '&operacao=list',
-            success: function(fpagamentoDados) {
-                $('#FPAGAMENTO_ID').empty();
-                for (const pagamento of fpagamentoDados) {
-                    let option = `<option value="${pagamento.ID}" ${dados.FPAGAMENTO_ID == pagamento.ID ? 'selected' : ''}>${pagamento.NOME}</option>`;
-                    console.log(dados);
-                    $('#FPAGAMENTO_ID').append(option);
-                }
-            }
-        });
-    
-        // Carregar as opções de ATENDENTE_ID selecionando o valor correto
-        $.ajax({
-            dataType: "JSON",
-            type: "POST",
-            async: true,
-            url: '../../../pw/api/models/atendentecontroller.php',
-            data: '&operacao=list',
-            success: function(atendenteDados) {
-                $('#ATENDENTE_ID').empty();
-                for (const tipo of atendenteDados) {
-                    let option = `<option value="${tipo.ID}" ${dados.ATENDENTE_ID == tipo.ID ? 'selected' : ''}>${tipo.NOME}</option>`;
-                    $('#ATENDENTE_ID').append(option);
-                }
-            }
-        });
-        // $.ajax({
-        //     dataType: "JSON",
-        //     type: "POST",
-        //     async: true,
-        //     url: '../../../pw/api/models/itensvendacontroller.php?operacao=view',
-        //     data: dados,
-        //     success: function(vendas) {
-        //     console.log(vendas);
-        //     }
-        // });
-    
-        // Carregar as opções de CLIENTE_ID selecionando o valor correto
-        $.ajax({
-            dataType: "JSON",
-            type: "POST",
-            async: true,
-            url: '../../../pw/api/models/clientecontroller.php',
-            data: '&operacao=list',
-            success: function(clienteDados) {
-                $('#CLIENTE').empty();
-                for (const tipo of clienteDados) {
-                    let option = `<option value="${tipo.ID}" ${dados.CLIENTE_ID == tipo.ID ? 'selected' : ''}>${tipo.NOME}</option>`;
-                    $('#CLIENTE').append(option);
-                }
-            }
-        });
+                    // Preencha os campos do modal com os dados recebidos
+                    $('#ID').val(dados.dados.ID);
+                    $('#DESCONTO').val(dados.dados.DESCONTO);
+                    $('#SUBTOTAL').val(dados.dados.SUBTOTAL);
+                    $('#VLRTOTAL').val(dados.dados.VLRTOTAL);
+                    // Preencha os campos adicionais do modal com os dados necessários
 
-        $.ajax({
-            dataType: "JSON",
-            type: "POST",
-            async: true,
-            data: { ID: dados.ID }, // Enviar apenas o ID_CURSO
-            url: '../../../pw/api/models/clientecontroller.php?operacao=list',
-            success: function(infos) {
-                $('#CLIENTE_ID').empty();
-                for (const tipo of infos) {
-                    let option = `<option>${tipo.NOME}</option>`;
-                    if (tipo.ID === dados.CLIENTE_ID) {
-                        option = `<option selected value="${tipo.ID}">${tipo.NOME}</option>`;
-                    } else {
-                        option = `<option value="${tipo.ID}">${tipo.NOME}</option>`;
-                    }
-                    console.log(option);
-                    $('#CLIENTE_ID').append(option);
-                }
-            }
-        });        
-    // }
+                    // Carregue os dados dos atendentes
+                    $.ajax({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        async: true,
+                        url: '../../../pw/api/models/atendentecontroller.php?operacao=list',
+                        success: function(atendenteDados) {
+                            $('#ATENDENTE_ID').empty();
+                            for (const atendente of atendenteDados) {
+                                let option = `<option value="${atendente.ID}" ${dados.dados.ATENDENTE_ID == atendente.ID ? 'selected' : ''}>${atendente.NOME}</option>`;
+                                $('#ATENDENTE_ID').append(option);
+                            }
+                        }
+                    });
 
-        // // Carregar as opções de PRODUTO selecionando os valores corretos
-        // $.ajax({
-        //     dataType: "JSON",
-        //     type: "POST",
-        //     async: true,
-        //     url: '../../../pw/api/models/produtocontroller.php',
-        //     data: '&operacao=list',
-        //     success: function(produtoDados) {
-        //         $('#PRODUTO').empty();
-        //         for (const produto of produtoDados) {
-        //             let option = `<option value="${produto.ID}" data-valor="${produto.VLRVENDA}" ${dados.PRODUTO_ID == produto.ID ? 'selected' : ''}>${produto.NOME}</option>`;
-        //             $('#PRODUTO').append(option);
-        //         }
-        //     }
-        // });
-    
+                    // Carregue os dados dos clientes
+                    $.ajax({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        async: true,
+                        url: '../../../pw/api/models/clientecontroller.php?operacao=list',
+                        success: function(clienteDados) {
+                            $('#CLIENTE').empty();
+                            for (const cliente of clienteDados) {
+                                let option = `<option value="${cliente.ID}" ${dados.dados.CLIENTE_ID == cliente.ID ? 'selected' : ''}>${cliente.NOME}</option>`;
+                                $('#CLIENTE').append(option);
+                            }
+                        }
+                    });
+
+                    // Carregue os dados das formas de pagamento
+                    $.ajax({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        async: true,
+                        url: '../../../pw/api/models/fPagamentocontroller.php?operacao=list',
+                        success: function(formaPagamentoDados) {
+                            $('#FPAGAMENTO_ID').empty();
+                            for (const formaPagamento of formaPagamentoDados) {
+                                let option = `<option value="${formaPagamento.ID}" ${dados.dados.FPAGAMENTO_ID == formaPagamento.ID ? 'selected' : ''}>${formaPagamento.NOME}</option>`;
+                                $('#FPAGAMENTO_ID').append(option);
+                            }
+                        }
+                    });
+
+                    // Resto do código para preencher os campos do modal e tratar eventos
                 }
             }
-        })
+        });
     }
-    
+
 
     $('#table-vendas').DataTable({
         "processing": true,
@@ -191,10 +144,11 @@ $(document).ready(function() {
         $('.modal-title').empty()
         $('.modal-title').append('Cadastro de Venda')
         $('#form-vendas :input').val('')
-            $('input').prop('disabled', false)
-            $('select').prop('disabled', false)
+        $('input').prop('disabled', false)
+        $('select').prop('disabled', false)
         $('.btn-save').attr('data-operation', 'create')
         $('#modal-vendas').modal('show')
+        $('.btn-add-produto, .btn-verificar').show();
 
         $.ajax({
             dataType: "JSON",
@@ -293,6 +247,7 @@ $(document).ready(function() {
 
         }
         $('.btn-verificar').click(function() {
+            console.log('subtotal.toFixed(2)');
             calcular()
         });
 
@@ -306,11 +261,11 @@ $(document).ready(function() {
                         <div class="novos-campos">
                             <div class="row row-produtos mx-1">
                                 <label for="PRODUTO_ID[]">Produtos</label>
-                                <select name="PRODUTO_ID[]" class="form-control col-5 mx-1 produto-select" id="PRODUTO_${contadorCampos}"></select>
+                                <select name="PRODUTO_ID[]" class="form-control col-12 mx-1 produto-select" id="PRODUTO_${contadorCampos}"></select>
                                 <label for="VALOR">Valor</label>
-                                <input id="VALOR_PRODUTO_${contadorCampos}" class="form-control col-3 mx-1 produto-valor" type="text" name="VALOR" readonly>
+                                <input id="VALOR_PRODUTO_${contadorCampos}" class="form-control col-4 mx-1 produto-valor" type="text" name="VALOR" readonly>
                                 <label for="QUANT[]">Quantidade</label>
-                                <input id="QUANT" class="form-control col-3 mx-1 quantidade-produto" type="text" name="QUANT[]" >
+                                <input id="QUANT" class="form-control col-4 mx-1 quantidade-produto" type="text" name="QUANT[]" >
                             </div>
             `;
             $('.novos-campos:last').after(novoCampo);
@@ -380,6 +335,7 @@ $(document).ready(function() {
         $('input').prop('disabled', true);
         $('select').prop('disabled', true);
         $('#modal-vendas').modal('show');
+        $('.btn-add-produto, .btn-verificar').hide();
     })
 
 
@@ -394,7 +350,9 @@ $(document).ready(function() {
         CRUD(dados, url);
         $('.btn-save').attr('data-operation', 'update');
         $('.btn-save').show();
-        $('input').prop('disabled', false)
+        $('input, select').prop('disabled', false)
+        $('#SUBTOTAL, #VLRTOTAL').prop('disabled', true)
+        $('.btn-add-produto, .btn-verificar').show();
         $('#modal-vendas').modal('show');
         $('#table-vendas').DataTable().ajax.reload();
     })
